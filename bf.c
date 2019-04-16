@@ -1,50 +1,10 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 
-#define BUFFER_SIZE 30000
-#define CODE_SIZE 1024
+#include "bf.h"
 
-static void bfProcessor(const char *CODE, const signed short CODE_LEN);
 static void rangeCheck(signed short in_num, const signed short THRESHOLD);
 static void loopCheck(signed short *count, const signed short ADDEND, const char CODE);
 
-int main(int argc, char *argv[])
-{
-    FILE *fp;
-    char code[CODE_SIZE] = {0};
-    signed short code_len = 0;
-
-    if (argc == 2)
-    {
-        if ((fp = fopen(argv[1], "r")) == NULL)
-        {
-            printf("file open error\n");
-            return -1;
-        }
-        for (code_len = 0; (code[code_len] = fgetc(fp)) != EOF && code_len < CODE_SIZE; code_len++)
-            ;
-    }
-    else if (argc == 1)
-    {
-        // for inline interpreter
-        printf("[input]: ");
-        fgets(code, CODE_SIZE, stdin);
-        code_len = strlen(code);
-    }
-    else
-    {
-        printf("usage: %s [filename.bf]\n", argv[0]);
-        return -1;
-    }
-    fclose(fp);
-
-    bfProcessor(code, code_len);
-
-    return 0;
-}
-
-static void bfProcessor(const char *CODE, const signed short CODE_LEN)
+void bfProcessor(const char *CODE, const signed short CODE_LEN)
 {
     unsigned char buffer[BUFFER_SIZE] = {0};
     signed short buffer_ptr = 0;
