@@ -4,12 +4,13 @@
 static void rangeCheck(signed short in_num, const signed short THRESHOLD);
 static void loopCheck(signed short *count, const signed short ADDEND, const char CODE);
 
-void bfProcessor(const char *CODE, const signed short CODE_LEN)
+void bfProcessor(const char *CODE, const signed short CODE_LEN, char *output)
 {
     unsigned char buffer[BUFFER_SIZE] = {0};
     signed short buffer_ptr = 0;
     signed short code_ptr = 0;
     signed short loop_count = 0;
+    unsigned short output_ptr = 0;
 
     for (; code_ptr < CODE_LEN; code_ptr++)
     {
@@ -46,7 +47,8 @@ void bfProcessor(const char *CODE, const signed short CODE_LEN)
             }
             break;
         case '.':
-            putchar(buffer[buffer_ptr]);
+            output[output_ptr] = buffer[buffer_ptr];
+            output_ptr++;
             break;
         case ',':
             getchar();
@@ -55,7 +57,6 @@ void bfProcessor(const char *CODE, const signed short CODE_LEN)
             break;
         }
     }
-    printf("\n");
 }
 
 static void rangeCheck(signed short in_num, const signed short THRESHOLD)

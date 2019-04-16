@@ -6,6 +6,7 @@ int main(int argc, char *argv[])
     FILE *fp;
     char code[CODE_SIZE] = {0};
     signed short code_len = 0;
+    char output[BUFFER_SIZE];
 
     if (argc == 2)
     {
@@ -17,21 +18,26 @@ int main(int argc, char *argv[])
         for (code_len = 0; (code[code_len] = fgetc(fp)) != EOF && code_len < CODE_SIZE; code_len++)
             ;
         fclose(fp);
+        bfProcessor(code, code_len, output);
+        printf("%s\n", output);
     }
     else if (argc == 1)
     {
-        // for inline interpreter
-        printf("[input]: ");
-        fgets(code, CODE_SIZE, stdin);
-        code_len = strlen(code);
+        while (1)
+        {
+            // for inline interpreter
+            printf("[input]: ");
+            fgets(code, CODE_SIZE, stdin);
+            code_len = strlen(code);
+            bfProcessor(code, code_len, output);
+            printf("%s\n", output);
+        }
     }
     else
     {
         printf("usage: %s [filename.bf]\n", argv[0]);
         return -1;
     }
-
-    bfProcessor(code, code_len);
 
     return 0;
 }
