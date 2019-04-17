@@ -1,9 +1,11 @@
 # C implemented Brainfuck Interpreter
 
+[![Build Status](https://travis-ci.org/yo-C-ta/brainfuck-c.svg?branch=master)](https://travis-ci.org/yo-C-ta/brainfuck-c) [![Coverage Status](https://coveralls.io/repos/github/yo-C-ta/brainfuck-c/badge.svg?branch=master)](https://coveralls.io/github/yo-C-ta/brainfuck-c?branch=master) ![GitHub](https://img.shields.io/github/license/yo-C-ta/brainfuck-c.svg)
+
 ## Setup
 
 ```bash
-gcc -o brainfuck bf.c main.c
+make brainfuck
 ```
 
 ## Usage
@@ -23,9 +25,11 @@ $ ./brainfuck
 Hello, BF!
 ```
 
-## CUnit
+## CUnit and coverage
 
-gcc -o test_bf test_bf.c bf.c -Wall -L/usr/local/lib -lcunit -I/usr/local/include
+```bash
+make test && ./test && gcov bf.gcda
+```
 
 ## History
 
