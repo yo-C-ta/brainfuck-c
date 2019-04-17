@@ -1,10 +1,10 @@
 
 #include "bf.h"
 
-static void rangeCheck(signed short in_num, const signed short THRESHOLD);
+static int rangeCheck(signed short in_num, const signed short THRESHOLD);
 static void loopCheck(signed short *count, const signed short ADDEND, const char CODE);
 
-void bfProcessor(const char *CODE, const signed short CODE_LEN, char *output)
+int bfProcessor(const char *CODE, const signed short CODE_LEN, char *output)
 {
     unsigned char buffer[BUFFER_SIZE] = {0};
     signed short buffer_ptr = 0;
@@ -17,16 +17,20 @@ void bfProcessor(const char *CODE, const signed short CODE_LEN, char *output)
         switch (CODE[code_ptr])
         {
         case '>':
-            rangeCheck(++buffer_ptr, BUFFER_SIZE);
+            if (rangeCheck(++buffer_ptr, BUFFER_SIZE) == EXIT_FAILURE)
+                return EXIT_FAILURE;
             break;
         case '<':
-            rangeCheck(--buffer_ptr, -1);
+            if (rangeCheck(--buffer_ptr, -1) == EXIT_FAILURE)
+                return EXIT_FAILURE;
             break;
         case '+':
-            rangeCheck(++buffer[buffer_ptr], 0);
+            if (rangeCheck(++buffer[buffer_ptr], 0) == EXIT_FAILURE)
+                return EXIT_FAILURE;
             break;
         case '-':
-            rangeCheck(--buffer[buffer_ptr], 255);
+            if (rangeCheck(--buffer[buffer_ptr], 255) == EXIT_FAILURE)
+                return EXIT_FAILURE;
             break;
         case '[':
             if (buffer[buffer_ptr] == 0)
@@ -57,16 +61,13 @@ void bfProcessor(const char *CODE, const signed short CODE_LEN, char *output)
             break;
         }
     }
+
+    return EXIT_SUCCESS;
 }
 
-static void rangeCheck(signed short in_num, const signed short THRESHOLD)
+static int rangeCheck(signed short in_num, const signed short THRESHOLD)
 {
-    if (in_num == THRESHOLD)
-    {
-        printf("syntax error\n");
-        exit(1);
-    }
-    return;
+    return in_num == THRESHOLD ? EXIT_FAILURE : EXIT_SUCCESS;
 }
 
 static void loopCheck(signed short *count, const signed short ADDEND, const char CODE)

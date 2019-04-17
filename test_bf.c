@@ -6,21 +6,21 @@
 static int cu_init_bf_suite(void);
 static int cu_clean_bf_suite(void);
 static void tc001_hello(void);
-//static void cu_bf_002(void);
-//static void cu_bf_003(void);
-//static void cu_bf_004(void);
-//static void cu_bf_005(void);
+static void tc002_bf_overflow(void);
+static void tc003_bf_overflow(void);
+static void tc004_bfsz_overflow(void);
+static void tc005_bfsz_overflow(void);
 
 int main()
 {
     CU_ErrorCode cu_bf_error;
 
     CU_TestInfo cu_bf_tarray[] = {
-        {"Test_001", tc001_hello},
-        //{"Test_002", cu_bf_002},
-        //{"Test_003", cu_bf_003},
-        //{"Test_004", cu_bf_004},
-        //{"Test_005", cu_bf_005},
+        {"Test001 Hello", tc001_hello},
+        {"Test002 Buffer overflow plus", tc002_bf_overflow},
+        {"Test003 Buffer overflow minus", tc003_bf_overflow},
+        {"Test004 Buffer size overflow plus", tc004_bfsz_overflow},
+        {"Test005 Buffer size overflow minus", tc005_bfsz_overflow},
         CU_TEST_INFO_NULL};
 
     CU_SuiteInfo cu_tsuites[] = {
@@ -58,13 +58,40 @@ static int cu_clean_bf_suite(void)
 static void tc001_hello(void)
 {
     char code[129] = "++++++[->+++++>+++++++>+++++++++++>++++++++++++>+++++++++++++++++>++++++++++++++++++<<<<<<]>>>>.>-.>..+++.<<<<++.<++.>>.>--.<<<+.";
-    int codelen = 129;
-    char buffer[32];
+    char out[32];
 
-    bfProcessor(code, codelen, buffer);
-    CU_ASSERT_STRING_EQUAL(buffer, "Hello, BF!");
+    CU_ASSERT_EQUAL(bfProcessor(code, 129, out), EXIT_SUCCESS);
+    CU_ASSERT_STRING_EQUAL(out, "Hello, BF!");
 }
-//static void cu_bf_002(void)
-//static void cu_bf_003(void)
-//static void cu_bf_004(void)
-//static void cu_bf_005(void)
+
+static void tc002_bf_overflow(void)
+{
+    char code[39] = "+++++++++++++++[->+++++++++++++++++<]>+";
+    char out[32];
+
+    CU_ASSERT_EQUAL(bfProcessor(code, 39, out), EXIT_FAILURE);
+}
+
+static void tc003_bf_overflow(void)
+{
+    char code[1] = "-";
+    char out[32];
+
+    CU_ASSERT_EQUAL(bfProcessor(code, 1, out), EXIT_FAILURE);
+}
+
+static void tc004_bfsz_overflow(void)
+{
+    char code[5] = "+[>+]";
+    char out[32];
+
+    CU_ASSERT_EQUAL(bfProcessor(code, 5, out), EXIT_FAILURE);
+}
+
+static void tc005_bfsz_overflow(void)
+{
+    char code[1] = "<";
+    char out[32];
+
+    CU_ASSERT_EQUAL(bfProcessor(code, 1, out), EXIT_FAILURE);
+}

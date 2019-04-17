@@ -18,8 +18,14 @@ int main(int argc, char *argv[])
         for (code_len = 0; (code[code_len] = fgetc(fp)) != EOF && code_len < CODE_SIZE; code_len++)
             ;
         fclose(fp);
-        bfProcessor(code, code_len, output);
-        printf("%s\n", output);
+        if (bfProcessor(code, code_len, output) == EXIT_FAILURE)
+        {
+            printf("syntax error.");
+        }
+        else
+        {
+            printf("%s\n", output);
+        }
     }
     else if (argc == 1)
     {
@@ -29,8 +35,14 @@ int main(int argc, char *argv[])
             printf("[input]: ");
             fgets(code, CODE_SIZE, stdin);
             code_len = strlen(code);
-            bfProcessor(code, code_len, output);
-            printf("%s\n", output);
+            if (bfProcessor(code, code_len, output) == EXIT_FAILURE)
+            {
+                printf("syntax error.");
+            }
+            else
+            {
+                printf("%s\n", output);
+            }
         }
     }
     else
