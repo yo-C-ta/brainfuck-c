@@ -1,0 +1,13 @@
+language: c
+
+compiler:
+  - gcc
+
+before_script:
+  - pip install --user cpp-coveralls
+
+script:
+  - make && ./test && gcov ./bf.gcda
+
+after_success:
+  - coveralls --gcov ./bf.gcov
