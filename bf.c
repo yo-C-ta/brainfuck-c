@@ -51,8 +51,7 @@ int bfProcessor(const char *CODE, const signed short CODE_LEN, char *output)
             }
             break;
         case '.':
-            output[output_ptr] = buffer[buffer_ptr];
-            output_ptr++;
+            output[output_ptr++] = buffer[buffer_ptr];
             break;
         case ',':
             getchar();

@@ -6,7 +6,7 @@ int main(int argc, char *argv[])
     FILE *fp;
     char code[CODE_SIZE] = {0};
     signed short code_len = 0;
-    char output[BUFFER_SIZE];
+    char output[BUFFER_SIZE] = {0};
 
     if (argc == 2)
     {
